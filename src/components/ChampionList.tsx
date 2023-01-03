@@ -50,8 +50,7 @@ export default function ChampionList() {
                 </ul>
             )
         }else {
-            
-    console.log('passou um erro aqui')
+            console.log('passou um erro aqui')
         }
 }
 
