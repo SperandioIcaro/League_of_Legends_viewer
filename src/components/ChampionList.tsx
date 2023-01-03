@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import ChampionCard from './ChampionCard';
+import {apiList} from '../api/Api';
+import { Names } from '../assets/namesChamps';
 
 interface Champion  {
     data: {
@@ -16,40 +18,40 @@ interface Champion  {
         key: number;
     }}
 
+const token = "RGAPI-b1191351-7c6c-42c0-a2b8-18ac24f4102a";
 
-export function ChampionList() {
-    const [champion, setChampion] = useState<Champion[]>([] as Champion[]);
+export default function ChampionList() {
+    const [champion, setChampion] = useState<any>([] as Champion[]);
+    console.log('passou aqui')
+    console.log(champion)
 
     useEffect(() => {
-        fetch('https://ddragon.leagueoflegends.com/cdn/12.23.1/data/pt_BR/champion.json')
-            .then(response => response.json())
-            .then(({data}) => {
-                setChampion(data)
-            })
-            //console.log(typeof(champion));
-    }, []);
+        apiList
+        .get(Names[0])
+        .then((response) => setChampion(response.data))
+        .catch((error) => {
+            console.log(champion)
+            console.log("deu ruim " + error)
+        })
+    }, [])
 
-    const ChampArr = Object.assign({}, champion);
-    //console.log(ChampArr);
-
-    return (
-        <ul>
-            <div>
-                {Object.keys(ChampArr).map((id) => {
-                    return <ChampionCard id={id} />
-                })}
-            </div>
-        </ul>
-    )
-
-    // return (
-    //     <ul>
-    //         <div>
-    //             {Object.keys(ChampArr).map((id) => {
-    //                 return <ChampionCard id={id} />
-    //             })}
-    //         </div>
-    //     </ul>
-    // )
+        if (token !== undefined) {
+            console.log('passou aqui 2')
+            apiList.defaults.headers.authorization = `Bearer ${token}`;
+          
+            return (
+                <ul>
+                    <div>
+                        {Object.keys(champion).map((id) => {
+            console.log('passou aqui 3')
+                            return <ChampionCard key={id}/>
+                        })}
+                    </div>
+                </ul>
+            )
+        }else {
+            
+    console.log('passou um erro aqui')
+        }
 }
 

@@ -1,4 +1,4 @@
-import { ChampionList } from "./components/ChampionList"
+import  ChampionList  from "./components/ChampionList"
 
 function App() {
 

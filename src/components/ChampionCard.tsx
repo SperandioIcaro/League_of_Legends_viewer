@@ -1,52 +1,55 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Names } from "../assets/namesChamps";
+import { apiCard } from "../api/Api";
 
-interface KeyCard {
-        id: string;
-}
 
 interface Champion  {
-    data:{
-        [0]:{
-        id : string;
-        name: string;
-        title: string;
-        image: {
-            full: string;
-            sprite: string;
-            group: string;
+    data: {
+            id : string,
+            name: string,
+            title: string,
+            image: {
+                full: string,
+                sprite: string,
+                group: string,
+            },
+            tags: string,
+            blurb: string,
+            key: string,
         }
-        tags: string[];
-        blurb: string;
-        key: number;
-    }}}
+}
 
-
-export default function ChampionCard({id}:KeyCard) {
-    const [champion, setChampion] = useState({} as Champion);
+export default function ChampionCard() {
+    const [champion, setChampion] = useState<any>([] as Champion[]);
 
     useEffect(() => {
-        axios.get(`https://ddragon.leagueoflegends.com/cdn/12.23.1/data/pt_BR/champion/${id}.json`)
-        .then(({data}) => {
-        setChampion(data)
-    })
-}, [])
+        apiCard
+        .get(Names[0])
+        .then((response) => setChampion(response.data))
+        .catch((error) => {
+            console.log("deu ruim" + error)
+        })
+    }, [])
+    
+    // return (
+    //     <ul>
+    //         <div key={champion.data.key}>
+    //             <p> nome: {champion?.data.id}</p>
+    //             <p>id: {champion?.data.key}</p>
+    //         </div>
+    //     </ul>
+    // )
 
-const ChampArr = Object.assign({}, champion);
-
-return (
-    console.log(ChampArr.data),
-
-    //<Link to={`/Champion/${champion.data.[0].id}`}>
-        <div key={id}>
-            <h1>{ChampArr.data.[0].id}</h1>
-            <span>{ChampArr.data.[0].title}</span>
-            {/* <img src={`http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${ChampArr.data.[0].image.full}`} alt={ChampArr.data.[0].name} /> */}
-            <span>{ChampArr.data.[0].tags}</span>
-            <span>{ChampArr.data.[0].blurb}</span>
+    return (
+        <div>
+            <h1>{champion.name}</h1>
+            <h2>{champion.title}</h2>
+            <img src={`http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${champion.image.full}`} alt={champion.name} />
+            <h3>{champion.tags}</h3>
+            <p>{champion.blurb}</p>
+            <Link to={`/champion/${champion.key}`}>Ver mais</Link>
         </div>
-    //</Link>
-)
-
+    )
 }
