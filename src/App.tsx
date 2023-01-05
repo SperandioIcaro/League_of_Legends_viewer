@@ -1,9 +1,11 @@
-import  ChampionList  from "./components/ChampionList"
+import { BrowserRouter } from "react-router-dom"
+import  Router  from "./routes"
 
 function App() {
-
   return (
-    <ChampionList />
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }
 
