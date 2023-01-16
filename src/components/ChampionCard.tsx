@@ -28,13 +28,16 @@ export function ChampionCard({id}:IProps) {
    
     return (
         <Link to={`/champInfo/${id}`}>
-            <div key={post.key} className="flex flex-col">
-                <div className="flex flex-col">
-                <img className="w-5 h-auto" src={image + post.id + "_0.jpg"} />
-                    <div className="flex">
-                        <strong>{post.name}</strong> 
-                        <span>{post.title}</span>
-                        <span>{post.tags}</span>
+            <div  className="flex flex-col items-center justify-center min-w-min cursor-default">
+                <div key={post.key} className="flex flex-col m-4 justify-center items-center w-60 h-11/12 p-0 cursor-pointer rounded-lg">
+                <img className="w-full z-0 h-auto rounded-lg" src={image + post.id + "_0.jpg"} />
+                    <div className="flex flex-col text-center z-10 bg-slate-100/50 -mt-14 w-full">
+                        <strong className="font-name -mb-1 text-gray-900 text-2xl">
+                            {post.name}
+                        </strong> 
+                        <span className="font-title text-2xl -mt-2">
+                            {post.title}
+                        </span>
                     </div>
                 </div>
             </div>

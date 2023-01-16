@@ -30,8 +30,7 @@ export function ChampInfo() {
     }, [])
 
     return (
-        <div>
-            <h1>Champion Info</h1>
+        <div className="pt-20">
             <div key={v4()}>
                 <ChampionInfo
                     key={v4()}

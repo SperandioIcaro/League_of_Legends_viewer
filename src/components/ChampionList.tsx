@@ -31,8 +31,8 @@ export function ChampionList() {
     
     return (
         <div>
-            <h1>Champions</h1>
-            <ul className='grid grid-flow-col gap-6 grid-rows-4'>
+            <h1 className='font-name text-center text-white text-3xl'>Lista de campeões</h1>
+            <ul className='grid grid-flow-row gap- grid-cols-5'>
                 {data.map((card) => 
                     <li key={card.key.toString()}>
                         <div>
