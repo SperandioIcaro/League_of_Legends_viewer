@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import {ChampionCard} from './ChampionCard';
-import {api} from '../services/Api';
 import axios from 'axios';
-import { v4 } from 'uuid';
-import { Link } from 'react-router-dom';
 
-interface Champion  {
+interface Data   {
         id : string;
         name: string;
         title: string;
@@ -18,35 +15,28 @@ interface Champion  {
         blurb: string;
         key: string;
     }
+    interface IProps {
+        id: string
+    }
 
 export function ChampionList() {
-    const [data, setChampion] = useState<Champion[]>([] as Champion[]);
-
-    useEffect(() => {
-        console.log('passou aqui 1')
-        axios.get('http://ddragon.leagueoflegends.com/cdn/12.23.1/data/pt_BR/champion.json')
-        .then(({data}) => {
-            setChampion(Object.values(data.data));
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }, [])
+     const [data, setData] = useState<Data[]>([] as Data[]);
+    
+    useEffect(() =>{
+        axios.get<Data[]>('http://ddragon.leagueoflegends.com/cdn/12.23.1/data/pt_BR/champion.json')
+          .then(({ data }) => {
+            setData(Object.values(data.data))
+          })
+      }, [])
     
     return (
         <div>
             <h1>Champions</h1>
             <ul className='grid grid-flow-col gap-6 grid-rows-4'>
-                {data.map(card => 
-                    <li key={card.id}>
+                {data.map((card) => 
+                    <li key={card.key.toString()}>
                         <div>
-                            <ChampionCard 
-                                id={card.id} 
-                                name={card.name} 
-                                title={card.title} 
-                                image={card.id}
-                                tags={card.tags} 
-                            />
+                            <ChampionCard id={card.id} />
                         </div>
                     </li>
                 )}
