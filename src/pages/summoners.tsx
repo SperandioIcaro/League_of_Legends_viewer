@@ -1,37 +1,33 @@
 import axios from "axios";
 import { useState } from "react";
 import { SummonerInfo } from "../components/SummonerInfo";
+import  { NumbToName } from "../assets/namesChamps";
 
 export function Summoners(this: any) {
+    
     const [summoner, setSummoner] = useState("");
     const [summonerInfo, setSummonerInfo] = useState({});
-    const [maestry, setMaestry] = useState({});
-    const API_KEY = "RGAPI-fb09970e-fe65-4d8c-a178-6e06b8be3236"
+    const [maestry, setMaestry] = useState({});  
 
-    function SearchForPlayer(event) {
-        var APICallString = "https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summoner.toLowerCase() + "?api_key=" + API_KEY
+    function SearchForPlayer() { 
+        const APICallSummoner = "https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summoner + `?api_key=RGAPI-8b615cf2-8675-4948-85be-09ee85dfef2d`
+        const APICallMaestry = "https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/" + summonerInfo.id + `?api_key=RGAPI-8b615cf2-8675-4948-85be-09ee85dfef2d`
 
-        axios.get(APICallString)
+        axios.get(APICallSummoner)
         .then(function (response) {
             setSummonerInfo(response.data)
         }).catch(function (error) {
             console.log(error);
         });
-
-    }
-
-    function SearchMaestry(event) {
-        var APICallString = "https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/" + summonerInfo.id + "?api_key=" + API_KEY
-
-        axios.get(APICallString)
+        
+        axios.get(APICallMaestry)
         .then(function (response) {
             setMaestry(response.data.slice(0, 3))
-
         }).catch(function (error) {
             console.log(error);
         });
+
     }
-    console.log(maestry[0])
 
     return (
         <div className="flex flex-col items-center justify-center pt-20">
@@ -43,21 +39,17 @@ export function Summoners(this: any) {
             
             {JSON.stringify(summonerInfo) != '{}' ?
             <>
-            {SearchMaestry(summonerInfo.id)}
             
             <span>invocador localizado</span>
             <SummonerInfo 
-                id={""}
-                accountId={""}
-                puuid={""}
                 name={summonerInfo.name}
                 profileIconId={summonerInfo.profileIconId}
-                revisionDate={0}
                 summonerLevel={summonerInfo.summonerLevel} 
-                championId={maestry[0].championId} 
+                championId={NumbToName(maestry[0].championId)} 
                 championLevel={maestry[0].championLevel} 
                 championPoints={maestry[0].championPoints}            
             />
+            
             </>
             :
             <>
